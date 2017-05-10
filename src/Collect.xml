@@ -1,0 +1,7 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:typ="http://bankid.com/RpService/v4.0.0/types/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <!-- orderRef same as orderRef in AuthenticateResponse.xml -->
+      <typ:orderRef>63c2fb02-34b7-465c-89e2-e4929bd756bb</typ:orderRef>
+   </soapenv:Body>
+</soapenv:Envelope>

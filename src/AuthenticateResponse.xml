@@ -1,8 +1,8 @@
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
    <soap:Body>
       <ns2:AuthResponse xmlns:ns2="http://bankid.com/RpService/v4.0.0/types/">
-         <orderRef>8beb9ff9-f044-4153-ae1e-bdfd3081e947</orderRef>
-         <autoStartToken>b3023172-459f-44d8-98d2-6b626d509f33</autoStartToken>
+         <orderRef>63c2fb02-34b7-465c-89e2-e4929bd756bb</orderRef>
+         <autoStartToken>06b987e3-e533-4a82-b811-fa0651e030a9</autoStartToken>
       </ns2:AuthResponse>
    </soap:Body>
 </soap:Envelope>
