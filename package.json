@@ -4,7 +4,16 @@
   "description": "Part 3 and 4 of krypto17 group project",
   "main": "src/app.js",
   "dependencies": {
-    "express": "^4.15.2"
+    "crypto": "0.0.3",
+    "express": "^4.15.2",
+    "fs": "0.0.1-security",
+    "https": "^1.0.0",
+    "mongoose": "^4.9.8",
+    "nodemailer": "^4.0.1",
+    "passport": "^0.3.2",
+    "path": "^0.12.7",
+    "request": "^2.81.0",
+    "xml2js": "^0.4.17"
   },
   "devDependencies": {},
   "scripts": {
