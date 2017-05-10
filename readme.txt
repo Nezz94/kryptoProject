@@ -1,0 +1,6 @@
+First name: Jacob
+Last name: Hallman
+Login code: O6NZDCBP
+Personal number: 198204153871
+Password: nedojacob
+BankID code:

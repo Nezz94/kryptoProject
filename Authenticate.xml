@@ -1,0 +1,26 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:typ="http://bankid.com/RpService/v4.0.0/types/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <typ:AuthenticateRequest>
+         <!--Optional:-->
+         <personalNumber>198204153871</personalNumber>
+         <!--0 to 20 repetitions:-->
+         <endUserInfo>
+            <type>IP_ADDR</type>
+            <value>130.229.180.6</value>
+         </endUserInfo>
+         <!--Optional:-->
+         <requirementAlternatives>
+            <!--0 to 7 repetitions:-->
+            <requirement>
+               <!--1 to 10 repetitions:-->
+               <condition>
+                  <key>CertificatePolicies</key>
+                  <!--1 to 20 repetitions:-->
+                  <value>1.2.3.4.*</value>
+               </condition>
+            </requirement>
+         </requirementAlternatives>
+      </typ:AuthenticateRequest>
+   </soapenv:Body>
+</soapenv:Envelope>
