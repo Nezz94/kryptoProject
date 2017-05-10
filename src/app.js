@@ -18,10 +18,10 @@ var app = express();
 app.get('/', function (req, res) {
 	res.sendFile(__dirname + "/index.html");
 })
-
+/*
 app.get('/success', function (req, res) {
 	res.send("LAMOOOO DET GICK GOOD!!");
-})
+})*/
 
 app.post('/nedo', urlencodedParser, function (req, res) {
 	console.log(req.body.personalnumber);
@@ -168,53 +168,47 @@ app.post('/nedo', urlencodedParser, function (req, res) {
                             {
                                 console.log(faultStringRes); //Inform the client about this fault too!
                                 clearInterval(intervalid);
+                            	console.log("Fel")
+                            	console.log("faultStringRes");
+                                res.send("Authentication canceled");
+                                clearInterval(intervalid);
                                 return;
+                            }
+                            else {
+                            	console.log("Inget fel")
                             }
 
                             statusCod = eval(tempStrnew).progressStatus[0];
 
+                            console.log("Hejsan!")
                             if (statusCod === "OUTSTANDING_TRANSACTION") {
-                                console.log("Outstanding Transaction");
+                            	console.log("Adrian är sämst på att köra bil");
+                            } 
+                            if (statusCod === "NO_CLIENT") {
+                                res.send("You don't have the BankID client installed...");
+                                clearInterval(intervalid);
 
                             }
-                            if (statusCod === "NO_CLIENT") {
-                                console.log("No Client");
+                            if (statusCod === "USER_CANCEL") {
+                            	console.log("C=3");
+                                res.send("Authentication canceled");
                                 clearInterval(intervalid);
-                            }
+
+                            }  
                             if (statusCod === "COMPLETE") {
-                                console.log(body);
                                 var providerUserProfile = 
                                 {
                                     firstName: eval(tempStrnew)['userInfo'][0].givenName[0],
                                     lastName: eval(tempStrnew)['userInfo'][0].surname[0],
-                                    displayName: eval(tempStrnew)['userInfo'][0].name[0],
-                                    email: eval(tempStrnew)['userInfo'][0].emails ? eval(tempStrnew)['userInfo'][0].emails[0].value : undefined,
-                                    username: eval(tempStrnew)['userInfo'][0].personalNumber[0],
-                                    password: eval(tempStrnew)['userInfo'][0].surname[0]+"123!@#",
-                                    //profileImageURL: (profile.id) ? '//graph.facebook.com/' + profile.id + '/picture?type=large' : undefined,
-                                    provider: 'local',
-                                    providerIdentifierField: 'username',
-                                    providerData: {username: eval(tempStrnew)['userInfo'][0].personalNumber[0]},
-                                    userRole: ['patient'],
                                 };
-                                /*
-                                User.findOne({"username":providerUserProfile.username}, function (err, person) {
-                                    if (!person)
-                                    {
-                                        providerUserProfile.isNewUser = true;
-                                        res.json(providerUserProfile);  
-                                    }
-                                    else
-                                    {
-                                        providerUserProfile.isNewUser = false;
-                                        res.json(providerUserProfile);  
-                                    }
-                                }); */
                                 clearInterval(intervalid);
                                 res.send(providerUserProfile.firstName + " " + providerUserProfile.lastName + " has used BankID!!!");
-                                //res.redirect("/success")
                                 return;
-                            }
+                            } 
+                            	console.log(statusCod);
+                            	//res.send(statusCod);
+                                //clearInterval(intervalid);
+
                         });
                         }
                     });
