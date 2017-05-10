@@ -1,6 +1,8 @@
 var express = require('express');
 var nodemailer = require('nodemailer');
 var crypto = require('crypto');
+var bodyParser = require('body-parser');
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
 var path = require('path'),
     //errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
     mongoose = require('mongoose'),
@@ -14,11 +16,17 @@ var path = require('path'),
 var app = express();
 
 app.get('/', function (req, res) {
-	res.send('Jojacocibobi')
+	res.sendFile(__dirname + "/index.html");
 })
 
-app.get('/nedo', function (req, res) {
-	var personalNumber = "197208263751";
+app.get('/success', function (req, res) {
+	res.send("LAMOOOO DET GICK GOOD!!");
+})
+
+app.post('/nedo', urlencodedParser, function (req, res) {
+	console.log(req.body.personalnumber);
+	//var personalNumber = "197208263751";
+	var personalNumber = req.body.personalnumber;
 	var myXMLText = '<?xml version="1.0" encoding="utf-8"?>' +
         '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:typ="http://bankid.com/RpService/v4.0.0/types/">' +
         '<soapenv:Header/>' +
@@ -203,6 +211,8 @@ app.get('/nedo', function (req, res) {
                                     }
                                 }); */
                                 clearInterval(intervalid);
+                                res.send(providerUserProfile.firstName + " " + providerUserProfile.lastName + " has used BankID!!!");
+                                //res.redirect("/success")
                                 return;
                             }
                         });

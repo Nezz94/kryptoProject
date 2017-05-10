@@ -4,6 +4,7 @@
   "description": "Part 3 and 4 of krypto17 group project",
   "main": "src/app.js",
   "dependencies": {
+    "body-parser": "^1.17.1",
     "crypto": "0.0.3",
     "express": "^4.15.2",
     "fs": "0.0.1-security",
