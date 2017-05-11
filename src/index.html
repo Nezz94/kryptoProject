@@ -11,11 +11,11 @@
   </head>
 
   <body>
-    <form action="nedo" method="POST">
+    <form action="authenticate" method="POST">
       <fieldset>
-        <legend>Personal information:</legend>
+        <legend>Personal information</legend>
         Personal number<br>
-        <input type="number" name="personalnumber" placeholder="yyyymmddxxxx"><br><br>
+        <input type="text" pattern="\d*" minlength="12" maxlength="12" placeholder="yyyymmddxxxx" name="personalnumber"><br><br>
         <input type="submit" value="Submit">
       </fieldset>
     </form>

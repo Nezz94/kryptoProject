@@ -23,7 +23,7 @@ app.get('/success', function (req, res) {
 	res.send("LAMOOOO DET GICK GOOD!!");
 })*/
 
-app.post('/nedo', urlencodedParser, function (req, res) {
+app.post('/authenticate', urlencodedParser, function (req, res) {
 	console.log(req.body.personalnumber);
 	//var personalNumber = "197208263751";
 	var personalNumber = req.body.personalnumber;
@@ -49,7 +49,7 @@ app.post('/nedo', urlencodedParser, function (req, res) {
         '<!--1 to 20 repetitions:-->  ' +
         '<!--<value>?</value> -->  ' +
         '<key>CertificatePolicies</key> 	<!--The certificate policy must be --> ' +
-        '<value>1.2.3.4.*</value>  	<!--1.2.752.1.5 (Mobile BankID) --> ' + //Currently set to test BankID -- Change in Production
+        '<value>1.2.3.4.*</value>  	<!--1.2.752.1.5 (Mobile BankID) --> ' + // Change value for production
         '</condition> ' +
         '</requirement> ' +
 
@@ -71,8 +71,8 @@ app.post('/nedo', urlencodedParser, function (req, res) {
     var intervalid;
     
     request({
-        url: "https://appapi.test.bankid.com/rp/v4",
-        host: "appapi.test.bankid.com",
+        url: "https://appapi2.test.bankid.com/rp/v4",
+        host: "appapi2.test.bankid.com",
         rejectUnauthorized: false,
         requestCert: true,
         method: "POST",
@@ -97,8 +97,8 @@ app.post('/nedo', urlencodedParser, function (req, res) {
 
             var tempStr = "JSON.parse(resJson)";
             var indeces = Array('soap:Envelope','soap:Body',0,'ns2:AuthResponse',0);
-            
-            for (var i=0;i<indeces.length; i++)
+
+            for (var i = 0; i < indeces.length; i++)
                 if(eval(tempStr+"['"+indeces[i]+"']"))
                     tempStr += "['"+indeces[i]+"']";
                 else
@@ -108,8 +108,8 @@ app.post('/nedo', urlencodedParser, function (req, res) {
                     break;
                 }
                 
-            if(faultString !==""){
-                console.log(faultString); //Repeort the user (client) about the fault
+            if(faultString !== ""){
+                console.log(faultString); //Report the user (client) about the fault
             }
             else
             {
@@ -152,10 +152,10 @@ app.post('/nedo', urlencodedParser, function (req, res) {
                             var resp = JSON.stringify(result);
                             var tempStrnew = "JSON.parse(resp)";
                             var indecesNew = Array('soap:Envelope','soap:Body',0,'ns2:CollectResponse',0);
-                            var statusCod = "";
+                            var statusCode = "";
                             var faultStringRes = "";
                             
-                            for (var i=0;i<indecesNew.length; i++)
+                            for (var i = 0; i < indecesNew.length; i++)
                                 if(eval(tempStrnew+"['"+indecesNew[i]+"']"))
                                     tempStrnew += "['"+indecesNew[i]+"']";
                                 else
@@ -175,27 +175,25 @@ app.post('/nedo', urlencodedParser, function (req, res) {
                                 return;
                             }
                             else {
-                            	console.log("Inget fel")
+                            	//console.log("Inget fel")
                             }
 
-                            statusCod = eval(tempStrnew).progressStatus[0];
+                            statusCode = eval(tempStrnew).progressStatus[0];
 
-                            console.log("Hejsan!")
-                            if (statusCod === "OUTSTANDING_TRANSACTION") {
-                            	console.log("Adrian är sämst på att köra bil");
+                            if (statusCode === "OUTSTANDING_TRANSACTION") {
+                            	//console.log("");
                             } 
-                            if (statusCod === "NO_CLIENT") {
-                                res.send("You don't have the BankID client installed...");
+                            if (statusCode === "NO_CLIENT") {
+                                res.send("Startup failed because of invalid personal number or BankID not available...");
                                 clearInterval(intervalid);
 
                             }
-                            if (statusCod === "USER_CANCEL") {
-                            	console.log("C=3");
+                            if (statusCode === "USER_CANCEL") {
                                 res.send("Authentication canceled");
                                 clearInterval(intervalid);
 
                             }  
-                            if (statusCod === "COMPLETE") {
+                            if (statusCode === "COMPLETE") {
                                 var providerUserProfile = 
                                 {
                                     firstName: eval(tempStrnew)['userInfo'][0].givenName[0],
@@ -205,8 +203,8 @@ app.post('/nedo', urlencodedParser, function (req, res) {
                                 res.send(providerUserProfile.firstName + " " + providerUserProfile.lastName + " has used BankID!!!");
                                 return;
                             } 
-                            	console.log(statusCod);
-                            	//res.send(statusCod);
+                            	console.log(statusCode);
+                            	//res.send(statusCode);
                                 //clearInterval(intervalid);
 
                         });
