@@ -73,8 +73,8 @@ app.post('/authenticate', urlencodedParser, function (req, res) {
     
     // Perform request to BankID
     request({
-        url: "https://appapi2.test.bankid.com/rp/v4",
-        host: "appapi2.test.bankid.com",
+        url: "https://appapi.test.bankid.com/rp/v4",
+        host: "appapi.test.bankid.com",
         rejectUnauthorized: false,
         requestCert: true,
         method: "POST",
