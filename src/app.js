@@ -26,6 +26,7 @@ app.get('/success', function (req, res) {
 app.post('/authenticate', urlencodedParser, function (req, res) {
 	console.log(req.body.personalnumber);
 	//var personalNumber = "197208263751";
+    // Create initial authenticate xml request
 	var personalNumber = req.body.personalnumber;
 	var myXMLText = '<?xml version="1.0" encoding="utf-8"?>' +
         '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:typ="http://bankid.com/RpService/v4.0.0/types/">' +
@@ -70,6 +71,7 @@ app.post('/authenticate', urlencodedParser, function (req, res) {
     var faultString = "";
     var intervalid;
     
+    // Perform request to BankID
     request({
         url: "https://appapi2.test.bankid.com/rp/v4",
         host: "appapi2.test.bankid.com",
@@ -91,7 +93,7 @@ app.post('/authenticate', urlencodedParser, function (req, res) {
             passphrase: 'qwerty123',
         },
     }, function(error, response, body) {
-        //extracting orderRef from the bankId server response XML
+        // Extract orderRef from the bankId server response XML
         parseString(body, function(err, result) {
             resJson = JSON.stringify(result);
 
@@ -111,12 +113,12 @@ app.post('/authenticate', urlencodedParser, function (req, res) {
             if(faultString !== ""){
                 console.log(faultString); //Report the user (client) about the fault
             }
-            else
+            else // No error
             {
             var theValue = eval(tempStr);
             autoStartToken = theValue.autoStartToken;
             orderRef = theValue.orderRef;
-            //Ping the BankId server every 3 seconds, with orderRef to get the User Data
+            // Ping the BankId server every 3 seconds, with orderRef to get the User Data
             intervalid = setInterval(function() {
                 var myXMLTextOrderRef = '<?xml version="1.0" encoding="utf-8"?>' +
                     '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:typ="http://bankid.com/RpService/v4.0.0/types/">' +
@@ -148,6 +150,7 @@ app.post('/authenticate', urlencodedParser, function (req, res) {
 
                 }, function(error, response, body) {
                     if (!error) {
+                        // Parse response
                         parseString(body, function(err, result) {
                             var resp = JSON.stringify(result);
                             var tempStrnew = "JSON.parse(resp)";
@@ -168,9 +171,8 @@ app.post('/authenticate', urlencodedParser, function (req, res) {
                             {
                                 console.log(faultStringRes); //Inform the client about this fault too!
                                 clearInterval(intervalid);
-                            	console.log("Fel")
-                            	console.log("faultStringRes");
-                                res.send("Authentication canceled");
+                            	console.log("Authentication canceled or an error occurred")
+                                res.send("Authentication canceled or an error occurred");
                                 clearInterval(intervalid);
                                 return;
                             }
@@ -178,6 +180,7 @@ app.post('/authenticate', urlencodedParser, function (req, res) {
                             	//console.log("Inget fel")
                             }
 
+                            // Extract statuscode and print out messages                     
                             statusCode = eval(tempStrnew).progressStatus[0];
 
                             if (statusCode === "OUTSTANDING_TRANSACTION") {
@@ -186,7 +189,6 @@ app.post('/authenticate', urlencodedParser, function (req, res) {
                             if (statusCode === "NO_CLIENT") {
                                 res.send("Startup failed because of invalid personal number or BankID not available...");
                                 clearInterval(intervalid);
-
                             }
                             if (statusCode === "USER_CANCEL") {
                                 res.send("Authentication canceled");
